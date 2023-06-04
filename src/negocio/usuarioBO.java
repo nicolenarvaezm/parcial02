@@ -123,4 +123,48 @@ public class usuarioBO {
             e.printStackTrace();
         }
     }
+
+    public void actualizarUsuario(String user, usuario usu){
+        try {
+            File archivo = new File("usuarios.txt");
+            FileReader leer = new FileReader(archivo);
+            BufferedReader buffer = new BufferedReader(leer);       
+            
+            File archivo2 = new File("usuarios2.txt");
+            FileWriter escribir = new FileWriter(archivo2);
+            BufferedWriter buffer2 = new BufferedWriter(escribir);
+
+            String linea = buffer.readLine();
+            while(linea != null){
+                String [] vector = linea.split("#");
+                if(user.equals(vector[2])){
+                    vector[0]= usu.getNombre();
+                    vector[1]= usu.getApellido();
+                    vector[2]= usu.getUser();
+                    vector[3]= usu.getPass();
+
+                    buffer2.write(vector[0] + "#");   
+                    buffer2.write(vector[1] + "#");
+                    buffer2.write(vector[2] + "#");
+                    buffer2.write(vector[3] + "#");
+                    buffer2.newLine();
+                }else{
+                    buffer2.write(vector[0] + "#");   
+                    buffer2.write(vector[1] + "#");
+                    buffer2.write(vector[2] + "#");
+                    buffer2.write(vector[3] + "#");
+                    buffer2.newLine();
+                }
+                linea = buffer.readLine();
+            }
+            buffer.close();
+            buffer2.close();
+            leer.close();
+            escribir.close();
+            archivo.delete();
+            archivo2.renameTo(new File("usuarios.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
+import negocio.productoBO;
 import negocio.usuarioBO;
+import servicio.producto;
 import servicio.usuario;
 
 public class App {
@@ -9,6 +11,9 @@ public class App {
         mostrarUsuarios();
         buscar();
         eliminarUsuarios();
+        actualizarUsuario();
+        guardarProducto();
+        buscarProducto();
     }
 
     public static void ingresarUsuario(){
@@ -48,6 +53,8 @@ public class App {
                 System.out.println("NOMBRE: " + nombre);
                 String apellido = usuBO.verUsuarios().get(i).getApellido();
                 System.out.println("APELLIDO: " + apellido);
+                String user = usuBO.verUsuarios().get(i).getUser();
+                System.out.println("USUARIO: " + user);
             }
         }
         
@@ -79,5 +86,70 @@ public class App {
         String user = teclado.nextLine();
         usuBO.eliminarUsuario(user);
         mostrarUsuarios();
+    }
+
+    public static void actualizarUsuario(){
+        usuarioBO usuBO = new usuarioBO();
+        usuario usu = new usuario(null, null, null, null);
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Ingrese usuario para actualizar: ");
+        String usuarioActualizar = teclado.nextLine();
+        System.out.println("Ingrese nombre: ");
+        String nombre = teclado.next();
+        System.out.println("Ingrese apellido: ");
+        String apellido = teclado.next();
+        System.out.println("Ingrese Username");
+        String username = teclado.next();
+        System.out.println("Ingrese Password");
+        String password = teclado.next();
+        usu.setNombre(nombre);
+        usu.setApellido(apellido);
+        usu.setUser(username);
+        usu.setPass(password);
+        
+        usuBO.actualizarUsuario(usuarioActualizar, usu);
+    }
+
+    public static void guardarProducto(){
+        productoBO productoBO = new productoBO();
+        producto nuevoP= new producto(null, null, null, null, null);
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Desea ingresar un nuevo producto? 1.Si  2.No");
+        int opcion = teclado.nextInt();
+        while(opcion ==1){
+            System.out.println("Codigo del producto: ");
+            String codigo = teclado.next();
+            System.out.println("Nombre del producto: ");
+            String nombre = teclado.next();
+            System.out.println("Descripcion del producto: ");
+            String descripcion = teclado.next();
+            System.out.println("Precio del producto: ");
+            String precio = teclado.next();
+            System.out.println("Cantidad del producto: ");
+            String cantidad = teclado.next();
+            productoBO.guardarProducto(nuevoP, codigo, nombre, descripcion, precio, cantidad);
+            System.out.println("Desea ingresar un nuevo producto? 1.Si  2.No");
+            opcion = teclado.nextInt();
+        }
+    }
+
+    public static void buscarProducto(){
+        producto producto = new producto(null,null,null,null, null);
+        productoBO productoBO = new productoBO();
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Ingrese producto a buscar: ");
+        String codigo = teclado.nextLine();
+        producto = productoBO.buscarProducto(codigo);
+        if(producto.getCodigo() != null){
+            System.out.println("EL PRODUCTO BUSCADO ES: ");
+            System.out.println(producto.getCodigo());
+            System.out.println(producto.getNombre());
+            System.out.println(producto.getDescripcion());
+            System.out.println(producto.getPrecio());
+            System.out.println(producto.getCantidad());
+        }
+        else{
+            System.out.println("PRODUCTO NO ENCONTRADO");
+        }
     }
 }
